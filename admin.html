@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-primary': '#FF6B35', // Vibrant orange
+                        'brand-secondary': '#F7B32D', // Warm yellow-orange
+                        'brand-background': '#FFF3E0' // Light orange background
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-brand-background min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+            <div class="bg-brand-primary text-white p-6 flex justify-between items-center">
+                <h1 class="text-3xl font-bold flex items-center">
+                    <i class="fas fa-tachometer-alt mr-3"></i>Admin Dashboard
+                </h1>
+                <button id="refreshOrders" class="bg-white text-brand-primary px-4 py-2 rounded-lg hover:bg-gray-100 transition flex items-center">
+                    <i class="fas fa-sync mr-2"></i>Refresh Orders
+                </button>
+            </div>
+
+            <div class="p-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2">
+                        <div class="bg-white rounded-lg p-4 mb-4 shadow">
+                            <h2 class="text-xl font-semibold mb-4 text-gray-800 flex items-center">
+                                <i class="fas fa-shopping-cart mr-3 text-brand-primary"></i>All Orders
+                            </h2>
+                            <div class="overflow-x-auto">
+                                <table class="w-full bg-white rounded-lg overflow-hidden">
+                                    <thead class="bg-brand-primary text-white">
+                                        <tr>
+                                            <th class="p-3 text-left">Order ID</th>
+                                            <th class="p-3 text-left">Email</th>
+                                            <th class="p-3 text-right">Amount</th>
+                                            <th class="p-3 text-center">Server</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="order-list" class="divide-y divide-gray-200"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="bg-white rounded-lg p-4 mb-4 shadow">
+                            <h2 class="text-xl font-semibold mb-4 text-gray-800 flex items-center">
+                                <i class="fas fa-server mr-3 text-brand-secondary"></i>Server Load
+                            </h2>
+                            <div id="server-load" class="space-y-3"></div>
+                        </div>
+                        <div class="flex justify-end">
+                            <button id="resetServerLoad" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition flex items-center">
+                                <i class="fas fa-redo-alt mr-2"></i>Reset Server Load
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function fetchOrders() {
+            const orderList = document.getElementById("order-list");
+            const refreshBtn = document.getElementById("refreshOrders");
+
+            // Disable refresh button during fetch
+            refreshBtn.disabled = true;
+            refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Refreshing...';
+
+            fetch("http://localhost:8081/orders/admin/orders")
+            .then(response => response.json())
+            .then(data => {
+                let ordersHtml = "";
+                data.forEach(order => {
+                    ordersHtml += `
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="p-3 text-gray-800">#${order.id}</td>
+                            <td class="p-3 text-gray-600">${order.email}</td>
+                            <td class="p-3 text-right font-bold text-brand-primary">₹${order.totalAmount.toFixed(2)}</td>
+                            <td class="p-3 text-center">
+                                <span class="bg-brand-secondary text-white px-2 py-1 rounded-full text-xs">
+                                    Server ${order.serverId}
+                                </span>
+                            </td>
+                        </tr>
+                    `;
+                });
+                orderList.innerHTML = ordersHtml;
+            })
+            .catch(error => {
+                orderList.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="text-center text-red-500 p-4">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                            Error fetching orders: ${error.message}
+                        </td>
+                    </tr>
+                `;
+            })
+            .finally(() => {
+                // Re-enable refresh button
+                refreshBtn.disabled = false;
+                refreshBtn.innerHTML = '<i class="fas fa-sync mr-2"></i>Refresh Orders';
+            });
+        }
+
+        function checkServerLoad() {
+            const serverLoadDiv = document.getElementById("server-load");
+
+            fetch("http://localhost:8081/orders/server-load")
+            .then(response => response.json())
+            .then(data => {
+                let loadHtml = data.map(server => `
+                    <div class="flex justify-between items-center bg-gray-100 p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Server ${server.server_id}</span>
+                        <span class="bg-brand-primary text-white px-3 py-1 rounded-full text-sm">
+                            ${server.order_count} Orders
+                        </span>
+                    </div>
+                `).join('');
+                serverLoadDiv.innerHTML = loadHtml;
+            })
+            .catch(error => {
+                serverLoadDiv.innerHTML = `
+                    <div class="text-center text-red-500 p-4">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        Error fetching server load: ${error.message}
+                    </div>
+                `;
+            });
+        }
+
+        function resetServerLoad() {
+            const resetBtn = document.getElementById("resetServerLoad");
+
+            // Disable reset button during fetch
+            resetBtn.disabled = true;
+            resetBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Resetting...';
+
+            fetch("http://localhost:8081/orders/admin/reset-load", { method: "PUT" })
+            .then(response => response.text())
+            .then(data => {
+                // Custom toast-like notification
+                const notification = document.createElement('div');
+                notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg';
+                notification.textContent = data;
+                document.body.appendChild(notification);
+                
+                // Remove notification after 3 seconds
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 3000);
+
+                // Refresh server load
+                checkServerLoad();
+            })
+            .catch(error => {
+                // Error notification
+                const notification = document.createElement('div');
+                notification.className = 'fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg';
+                notification.textContent = `Error: ${error.message}`;
+                document.body.appendChild(notification);
+                
+                // Remove notification after 3 seconds
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 3000);
+            })
+            .finally(() => {
+                // Re-enable reset button
+                resetBtn.disabled = false;
+                resetBtn.innerHTML = '<i class="fas fa-redo-alt mr-2"></i>Reset Server Load';
+            });
+        }
+
+        // Event Listeners
+        document.getElementById("refreshOrders").addEventListener("click", fetchOrders);
+        document.getElementById("resetServerLoad").addEventListener("click", resetServerLoad);
+
+        // Initial load
+        document.addEventListener("DOMContentLoaded", () => {
+            fetchOrders();
+            checkServerLoad();
+            
+            // Auto-refresh server load every 30 seconds
+            setInterval(checkServerLoad, 30000);
+        });
+    </script>
+</body>
+</html>

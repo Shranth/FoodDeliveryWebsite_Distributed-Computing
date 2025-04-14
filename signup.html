@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickBite - Sign Up</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Light Mode Colors */
+            --primary-color: #FF6B00;
+            --primary-dark: #E05A00;
+            --primary-light: #FFF0E6;
+            --text-color: #333333;
+            --bg-color: #f9f9f9;
+            --bg-gradient: linear-gradient(135deg, #f9f9f9, #e9e9e9);
+            --card-bg: white;
+            --light-gray: #f5f5f5;
+            --medium-gray: #ddd;
+            --error-color: #e74c3c;
+            --success-color: #2ecc71;
+            --footer-bg: rgba(255, 255, 255, 0.8);
+            --footer-border: rgba(0, 0, 0, 0.05);
+            --footer-text: #666;
+            --pattern-opacity: 0.3;
+            --circle-gradient: rgba(255, 107, 0, 0.05);
+            --benefit-bg: rgba(255, 255, 255, 0.1);
+            --benefit-border: rgba(255, 255, 255, 0.2);
+            --icon-color: rgba(255, 107, 0, 0.1);
+            --input-focus-bg: var(--primary-light);
+            --login-bg: var(--light-gray);
+            --login-text: #666;
+            --icon-color-form: #aaa;
+        }
+
+        /* Dark Mode Colors - Updated */
+        [data-theme="dark"] {
+            /* Changed from orange to a cool blue/purple palette */
+            --primary-color: #7B68EE; /* Medium slate blue instead of orange */
+            --primary-dark: #9370DB; /* Medium purple for hover states */
+            --primary-light: #241E4E; /* Dark purple background for subtle highlights */
+            --text-color: #E6E6E6;
+            --bg-color: #121212;
+            --bg-gradient: linear-gradient(135deg, #121212, #1E1E1E);
+            --card-bg: #1E1E1E;
+            --light-gray: #2A2A2A;
+            --medium-gray: #3A3A3A;
+            --error-color: #e74c3c;
+            --success-color: #2ecc71;
+            --footer-bg: rgba(18, 18, 18, 0.9);
+            --footer-border: rgba(255, 255, 255, 0.05);
+            --footer-text: #999;
+            --pattern-opacity: 0.15;
+            --circle-gradient: rgba(123, 104, 238, 0.1); /* Changed to match new primary color */
+            --benefit-bg: rgba(0, 0, 0, 0.3);
+            --benefit-border: rgba(123, 104, 238, 0.3); /* Changed to match new primary color */
+            --icon-color: rgba(123, 104, 238, 0.2); /* Changed to match new primary color */
+            --input-focus-bg: rgba(123, 104, 238, 0.1); /* Changed to match new primary color */
+            --login-bg: #2A2A2A;
+            --login-text: #B0B0B0;
+            --icon-color-form: #777;
+        }
+
+        
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+        
+        body { 
+            display: flex; 
+            flex-direction: column;
+            min-height: 100vh; 
+            color: var(--text-color);
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Full-page background styling */
+        .page-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+            background-color: var(--bg-color);
+            overflow: hidden;
+        }
+        
+        /* Background gradient base */
+        .background-gradient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-gradient);
+            z-index: -9;
+        }
+        
+        /* Background pattern */
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FF6B00' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            z-index: -8;
+            opacity: var(--pattern-opacity);
+        }
+
+        /* Update background pattern SVG for dark mode */
+        [data-theme="dark"] .background-pattern {
+            background-image: 
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%237B68EE' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        /* Decorative background elements */
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            z-index: -7;
+        }
+        
+        .bg-circle-1 {
+            top: 10%;
+            left: 5%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--circle-gradient) 0%, rgba(255, 107, 0, 0.02) 50%, transparent 70%);
+            animation: float 8s infinite ease-in-out;
+        }
+        
+        .bg-circle-2 {
+            bottom: 5%;
+            right: 10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--circle-gradient) 0%, rgba(255, 107, 0, 0.02) 60%, transparent 80%);
+            animation: float 12s infinite ease-in-out reverse;
+        }
+        
+        .bg-circle-3 {
+            top: 40%;
+            right: 15%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, var(--circle-gradient) 0%, rgba(255, 107, 0, 0.02) 50%, transparent 70%);
+            animation: float 10s infinite ease-in-out 2s;
+        }
+        
+        .bg-circle-4 {
+            bottom: 30%;
+            left: 8%;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, var(--circle-gradient) 0%, rgba(255, 107, 0, 0.02) 50%, transparent 70%);
+            animation: float 9s infinite ease-in-out 1s;
+        }
+        
+        /* Food icon decorations in background */
+        .food-icon {
+            position: absolute;
+            font-size: 1.5rem;
+            color: var(--icon-color);
+            z-index: -6;
+        }
+        
+        .food-icon-1 {
+            top: 15%;
+            left: 20%;
+            font-size: 2.5rem;
+            animation: float 12s infinite ease-in-out;
+        }
+        
+        .food-icon-2 {
+            top: 25%;
+            right: 25%;
+            animation: float 8s infinite ease-in-out 2s;
+        }
+        
+        .food-icon-3 {
+            bottom: 20%;
+            left: 30%;
+            font-size: 2rem;
+            animation: float 10s infinite ease-in-out 1s;
+        }
+        
+        .food-icon-4 {
+            bottom: 15%;
+            right: 15%;
+            animation: float 9s infinite ease-in-out;
+        }
+        
+        .food-icon-5 {
+            top: 40%;
+            left: 10%;
+            font-size: 1.8rem;
+            animation: float 11s infinite ease-in-out 3s;
+        }
+        
+        /* Curved gradient decorations */
+        .curved-decoration {
+            position: absolute;
+            z-index: -7;
+        }
+        
+        .curve-1 {
+            top: 0;
+            right: 0;
+            width: 30%;
+            height: 30%;
+            background: linear-gradient(135deg, transparent, rgba(255, 107, 0, 0.03));
+            border-radius: 0 0 0 100%;
+        }
+        
+        .curve-2 {
+            bottom: 0;
+            left: 0;
+            width: 30%;
+            height: 30%;
+            background: linear-gradient(315deg, transparent, rgba(255, 107, 0, 0.03));
+            border-radius: 0 100% 0 0;
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 40px 0;
+        }
+        
+        .container {
+            display: flex;
+            max-width: 900px;
+            width: 90%;
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+            margin: 0 auto;
+        }
+        
+        /* Decorative curve for the container */
+        .container::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            height: 200px;
+            width: 200px;
+            background: var(--primary-light);
+            border-radius: 100% 0 0 0;
+            z-index: -1;
+        }
+        
+        .brand-side {
+            flex: 1;
+            background: linear-gradient(145deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Decorative patterns for brand side */
+        .brand-side::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
+            z-index: 0;
+        }
+        
+        .brand-side .content {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+        
+        .brand-logo {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .brand-side h1 {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .brand-side h1::after {
+            content: "";
+            position: absolute;
+            left: 30%;
+            bottom: -10px;
+            width: 40%;
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+        }
+        
+        .brand-side p {
+            margin: 20px 0 30px;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            opacity: 0.9;
+        }
+        
+        .benefits {
+            text-align: left;
+            width: 100%;
+            background: var(--benefit-bg);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .benefits-title {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            font-weight: 600;
+            position: relative;
+        }
+        
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 2px solid var(--benefit-border);
+            transition: all 0.3s ease;
+            font-size: clamp(0.85rem, 1.5vw, 1rem);
+        }
+        
+        .benefit-item:hover {
+            border-left-color: white;
+            transform: translateX(5px);
+        }
+        
+        .benefit-item i {
+            margin-right: 15px;
+            font-size: 1.2rem;
+            background: rgba(255, 255, 255, 0.15);
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .signup-form-container { 
+            flex: 1.2;
+            padding: 40px; 
+            background: var(--card-bg);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Decorative elements for form side */
+        .signup-form-container::before {
+            content: "";
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 100px;
+            height: 100px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            z-index: 0;
+        }
+        
+        .form-header {
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .form-header::after {
+            content: "";
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: var(--primary-color);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+        
+        .form-header h2 {
+            font-size: clamp(1.4rem, 4vw, 1.8rem);
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+        
+        .form-header p {
+            color: var(--login-text);
+            font-size: clamp(0.9rem, 1.5vw, 1rem);
+        }
+        
+        .form-group { 
+            margin-bottom: 20px; 
+            position: relative;
+        }
+        
+        .form-group label { 
+            display: block; 
+            font-weight: 500; 
+            margin-bottom: 8px;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            font-size: clamp(0.9rem, 1.5vw, 1rem);
+        }
+        
+        .form-group input { 
+            width: 100%; 
+            padding: 12px 15px; 
+            border: 1px solid var(--medium-gray); 
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.1);
+            background-color: var(--input-focus-bg);
+        }
+        
+        .form-group input:focus + .input-icon {
+            color: var(--primary-color);
+        }
+        
+        .input-icon {
+            position: absolute;
+            top: 39px;
+            right: 15px;
+            color: var(--icon-color-form);
+            transition: all 0.3s ease;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .signup-btn { 
+            background: var(--primary-color); 
+            color: white; 
+            padding: 12px; 
+            border: none; 
+            width: 100%; 
+            cursor: pointer; 
+            font-size: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.2);
+        }
+        
+        .signup-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.5s;
+            z-index: -1;
+        }
+        
+        .signup-btn:hover::before {
+            left: 100%;
+        }
+        
+        .signup-btn:hover { 
+            background: var(--primary-dark); 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 0, 0.25);
+        }
+        
+        .signup-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 10px rgba(255, 107, 0, 0.15);
+        }
+        
+        .login-link { 
+            text-align: center; 
+            margin-top: 25px;
+            color: var(--login-text);
+            padding: 15px;
+            background-color: var(--login-bg);
+            border-radius: 8px;
+            font-size: clamp(0.85rem, 1.5vw, 1rem);
+        }
+        
+        .login-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+        }
+        
+        .login-link a::after {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+        
+        .login-link a:hover::after {
+            width: 100%;
+        }
+        
+        #signup-message { 
+            text-align: center; 
+            margin-top: 15px; 
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+        
+        #signup-message.active {
+            opacity: 1;
+        }
+        
+        .success-message {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: var(--success-color);
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .error-message {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--error-color);
+            border-left: 4px solid var(--error-color);
+        }
+        
+        /* Footer with brand info */
+        .page-footer {
+            width: 100%;
+            padding: 15px 0;
+            text-align: center;
+            background: var(--footer-bg);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid var(--footer-border);
+            font-size: 0.9rem;
+            color: var(--footer-text);
+            z-index: 10;
+            position: sticky;
+            bottom: 0;
+        }
+        
+        .page-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .page-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+        }
+
+        .theme-toggle:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        }
+
+        .theme-toggle i {
+            font-size: 1.5rem;
+        }
+        
+        /* Responsive designs - Enhanced with additional breakpoints */
+        @media (max-width: 992px) {
+            .container {
+                width: 95%;
+                max-width: 700px;
+            }
+            
+            .brand-logo {
+                font-size: 3rem;
+            }
+            
+            .container::after {
+                height: 150px;
+                width: 150px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px 0 60px;
+            }
+            
+            .container {
+                flex-direction: column;
+                width: 95%;
+            }
+            
+            .brand-side {
+                padding: 30px 20px;
+            }
+            
+            .signup-form-container {
+                padding: 30px 20px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            /* Adjust background elements for mobile */
+            .bg-circle {
+                opacity: 0.6;
+            }
+            
+            .food-icon {
+                opacity: 0.3;
+            }
+            
+            /* Improve input field accessibility on mobile */
+            .form-group input {
+                font-size: 16px; /* Prevents auto-zoom on iOS */
+            }
+
+            /* Adjust theme toggle for mobile */
+            .theme-toggle {
+                width: 40px;
+                height: 40px;
+                top: 10px;
+                right: 10px;
+            }
+
+            .theme-toggle i {
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 10px 0 50px;
+            }
+            
+            .signup-form-container {
+                padding: 20px 15px;
+            }
+            
+            .brand-side {
+                padding: 25px 15px;
+            }
+            
+            .form-group input {
+                padding: 10px 12px;
+            }
+            
+            .bg-circle-1, .bg-circle-4 {
+                display: none; /* Remove some decorations on very small screens */
+            }
+            
+            .food-icon {
+                font-size: 1rem;
+            }
+            
+            .benefits {
+                padding: 15px;
+            }
+            
+            .benefit-item i {
+                width: 25px;
+                height: 25px;
+                font-size: 0.9rem;
+                margin-right: 10px;
+            }
+            
+            .brand-logo {
+                font-size: 2.5rem;
+            }
+        }
+        
+        /* Support for ultra-wide screens */
+        @media (min-width: 1600px) {
+            .container {
+                max-width: 1200px;
+            }
+            
+            .brand-side, .signup-form-container {
+                padding: 60px;
+            }
+        }
+        
+        /* Support for reduced motion preferences */
+        @media (prefers-reduced-motion: reduce) {
+            .bg-circle, .food-icon {
+                animation: none;
+            }
+            
+            .signup-btn::before {
+                transition: none;
+            }
+        }
+        
+        /* Print styles */
+        @media print {
+            .page-background, .bg-circle, .food-icon, .curved-decoration, .theme-toggle {
+                display: none;
+            }
+            
+            .container {
+                box-shadow: none;
+                width: 100%;
+                margin: 0;
+            }
+            
+            .page-footer {
+                position: relative;
+                background: transparent;
+            }
+        }
+        
+        /* Animation keyframes */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Full-page background -->
+    <div class="page-background">
+        <div class="background-gradient"></div>
+        <div class="background-pattern"></div>
+        
+        <!-- Background decorative elements -->
+        <div class="bg-circle bg-circle-1"></div>
+        <div class="bg-circle bg-circle-2"></div>
+        <div class="bg-circle bg-circle-3"></div>
+        <div class="bg-circle bg-circle-4"></div>
+        
+        <!-- Food icons in background -->
+        <i class="fas fa-pizza-slice food-icon food-icon-1"></i>
+        <i class="fas fa-hamburger food-icon food-icon-2"></i>
+        <i class="fas fa-utensils food-icon food-icon-3"></i>
+        <i class="fas fa-coffee food-icon food-icon-4"></i>
+        <i class="fas fa-ice-cream food-icon food-icon-5"></i>
+        
+        <!-- Curved decorations -->
+        <div class="curved-decoration curve-1"></div>
+        <div class="curved-decoration curve-2"></div>
+    </div>
+    
+    <div class="main-content">
+        <div class="container">
+            <div class="brand-side">
+                <div class="content">
+                    <div class="brand-logo">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h1>QuickBite</h1>
+                    <p>Delicious food delivered to your doorstep in minutes!</p>
+                    
+                    <div class="benefits">
+                        <div class="benefits-title">Why Choose Us</div>
+                        <div class="benefit-item">
+                            <i class="fas fa-store"></i>
+                            <span>Wide variety of restaurants</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-shipping-fast"></i>
+                            <span>Fast delivery guaranteed</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-percent"></i>
+                            <span>Exclusive deals for members</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-star"></i>
+                            <span>Top-rated customer service</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="signup-form-container">
+                <div class="form-header">
+                    <h2>Create Your Account</h2>
+                    <p>Join QuickBite and start ordering today!</p>
+                </div>
+                
+                <form id="signup-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="first-name">First Name</label>
+                            <input type="text" id="first-name" required>
+                            <i class="fas fa-user input-icon"></i>
+                        </div>
+                        <div class="form-group">
+                            <label for="last-name">Last Name</label>
+                            <input type="text" id="last-name" required>
+                            <i class="fas fa-user input-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" required>
+                        <i class="fas fa-envelope input-icon"></i>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Delivery Address</label>
+                        <input type="text" id="address" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" required>
+                        <i class="fas fa-phone input-icon"></i>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" required>
+                        <i class="fas fa-lock input-icon"></i>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" id="confirm-password" required>
+                        <i class="fas fa-lock input-icon"></i>
+                    </div>
+                    
+                    <button type="submit" class="signup-btn">
+                        Sign Up <i class="fas fa-arrow-right"></i>
+                    </button>
+                    
+                    <div id="signup-message"></div>
+                </form>
+                
+                <div class="login-link">
+                    Already have an account? <a href="login.html">Log In</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="page-footer">
+        &copy; 2025 QuickBite. All rights reserved. <a href="terms.html">Terms</a> | <a href="privacy.html">Privacy</a>
+    </footer>
+    
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        // Check for saved theme preference or use preferred color scheme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+        }
+        
+        // Toggle theme function
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+            }
+        });
+        
+
+
+
+
+        document.getElementById("signup-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const user = {
+        firstName: document.getElementById("first-name").value,
+        lastName: document.getElementById("last-name").value,
+        email: document.getElementById("email").value,
+        phone: document.getElementById("phone").value,
+        address: document.getElementById("address").value,
+        password: document.getElementById("password").value
+    };
+
+    fetch("http://localhost:8080/users/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(user)
+    })
+    .then(response => response.text())
+    .then(data => {
+        showMessage(data, "success"); // Display success message
+        if (data.includes("successful")) {
+            setTimeout(() => { 
+                window.location.href = "login.html"; 
+            }, 2500);  // Increased delay for better visibility
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        showMessage("An error occurred. Please try again.", "error");
+    });
+});
+
+// Function to show messages
+function showMessage(message, type) {
+    const signupMessage = document.getElementById("signup-message");
+    signupMessage.textContent = message;
+    signupMessage.className = type === "success" ? "success-message" : "error-message";
+    signupMessage.style.color = type === "success" ? "green" : "red";
+    signupMessage.classList.add("active");
+
+    setTimeout(() => {
+        signupMessage.classList.remove("active");
+    }, 5000); // Keep message visible for 5 seconds
+}
+
+
+
+
+
+
+
+
+
+        // // Form submission handling
+        // const signupForm = document.getElementById('signup-form');
+        // const signupMessage = document.getElementById('signup-message');
+        
+        // signupForm.addEventListener('submit', function(e) {
+        //     e.preventDefault();
+            
+        //     const password = document.getElementById('password').value;
+        //     const confirmPassword = document.getElementById('confirm-password').value;
+            
+        //     // Simple validation
+        //     if (password !== confirmPassword) {
+        //         showMessage('Passwords do not match!', 'error');
+        //         return;
+        //     }
+            
+        //     // Simulate form submission
+        //     showMessage('Account created successfully! Redirecting...', 'success');
+            
+        //     // Reset form after successful submission
+        //     setTimeout(() => {
+        //         signupForm.reset();
+        //         // In a real app, you would redirect to login or dashboard
+        //         // window.location.href = 'dashboard.html';
+        //     }, 2000);
+        // });
+        
+        // // Show message function
+        // function showMessage(message, type) {
+        //     signupMessage.textContent = message;
+        //     signupMessage.className = type === 'success' ? 'success-message' : 'error-message';
+        //     signupMessage.classList.add('active');
+            
+        //     // Hide message after 5 seconds
+        //     setTimeout(() => {
+        //         signupMessage.classList.remove('active');
+        //     }, 5000);
+        // }
+    </script>
+</body>
+</html>

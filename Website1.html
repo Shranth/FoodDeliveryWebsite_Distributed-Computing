@@ -1,0 +1,2462 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickBite | Food Delivery</title>
+    <style>
+        :root {
+            /* Light theme (default) */
+            --primary: #ff5733;
+            --primary-dark: #e04d2c;
+            --primary-light: #ff7c5e;
+            --secondary: #333;
+            --background: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #333333;
+            --text-light: #666666;
+            --border: #eeeeee;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+            --header-bg: #ff5733;
+            --header-text: #ffffff;
+            --success: #4CAF50;
+            --info: #2196F3;
+            --warning: #FF9800;
+            --error: #F44336;
+            --radius: 8px;
+            --transition: all 0.3s ease;
+        }
+        
+        /* Dark theme */
+        [data-theme="dark"] {
+            --primary: #ff7c5e;
+            --primary-dark: #ff5733;
+            --primary-light: #ff9e88;
+            --secondary: #f8f9fa;
+            --background: #1a1a1a;
+            --card-bg: #2d2d2d;
+            --text: #f0f0f0;
+            --text-light: #c0c0c0;
+            --border: #444444;
+            --shadow: 0 4px 12px rgba(0,0,0,0.3);
+            --header-bg: #2d2d2d;
+            --header-text: #ff7c5e;
+            --success: #81C784;
+            --info: #64B5F6;
+            --warning: #FFB74D;
+            --error: #E57373;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            transition: var(--transition);
+        }
+        
+        header {
+            background-color: var(--header-bg);
+            color: var(--header-text);
+            padding: 1rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: var(--transition);
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-icon {
+            font-size: 1.8rem;
+        }
+        
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--header-text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            border-radius: 50%;
+        }
+        
+        .theme-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 15px;
+        }
+        
+        .section-title {
+            position: relative;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            text-align: left;
+            color: var(--text);
+            transition: var(--transition);
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background-color: var(--primary);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        
+        .card-img {
+            height: 160px;
+            width: 100%;
+            object-fit: cover;
+            background-color: #f0f0f0;
+        }
+        
+        .card-content {
+            padding: 1.2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            transition: var(--transition);
+        }
+        
+        .restaurant-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            transition: var(--transition);
+        }
+        
+        .restaurant-info span {
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+        }
+        
+        .restaurant-info i {
+            margin-right: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .menu-price {
+            font-weight: bold;
+            margin-top: auto;
+            color: var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+        
+        .btn {
+            padding: 0.6rem 1.2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.7rem;
+        }
+        
+        .btn-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        #menu-container {
+            margin-top: 2rem;
+            min-height: 200px;
+            transition: var(--transition);
+        }
+        
+        .two-column {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .cart-container {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            position: sticky;
+            top: 90px;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        
+        #cart-items {
+            list-style: none;
+            margin-bottom: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        
+        .cart-item-info {
+            flex: 1;
+        }
+        
+        .cart-item-name {
+            font-weight: 600;
+            color: var(--text);
+            transition: var(--transition);
+        }
+        
+        .cart-item-price {
+            color: var(--primary);
+            font-weight: bold;
+            transition: var(--transition);
+        }
+        
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        
+        .quantity-btn {
+            background: var(--background);
+            border: none;
+            color: var(--text);
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        
+        .quantity-btn:hover {
+            background-color: var(--primary-light);
+            color: white;
+        }
+        
+        .quantity-input {
+            width: 28px;
+            height: 28px;
+            border: none;
+            text-align: center;
+            font-size: 0.9rem;
+            border-left: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+            background-color: var(--card-bg);
+            color: var(--text);
+            transition: var(--transition);
+        }
+        
+        .cart-summary {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px dashed var(--border);
+            transition: var(--transition);
+        }
+        
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            color: var(--text);
+            transition: var(--transition);
+        }
+
+    .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        color: var(--text-light);
+        text-align: center;
+        transition: var(--transition);
+    }
+    
+    .empty-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: var(--text-light);
+        transition: var(--transition);
+    }
+    
+    .loader {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        border: 3px solid rgba(255,87,51,0.3);
+        border-radius: 50%;
+        border-top-color: var(--primary);
+        animation: spin 1s ease-in-out infinite;
+        margin: 2rem auto;
+    }
+    
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+    
+    .tabs {
+        display: flex;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border);
+        overflow-x: auto;
+        scrollbar-width: thin;
+        transition: var(--transition);
+    }
+    
+    .tabs::-webkit-scrollbar {
+        height: 4px;
+    }
+    
+    .tabs::-webkit-scrollbar-thumb {
+        background-color: var(--primary-light);
+        border-radius: 10px;
+    }
+    
+    .tab {
+        padding: 0.8rem 1.5rem;
+        cursor: pointer;
+        border-bottom: 3px solid transparent;
+        transition: var(--transition);
+        font-weight: 500;
+        white-space: nowrap;
+        color: var(--text);
+    }
+    
+    .tab:hover {
+        color: var(--primary);
+    }
+    
+    .tab.active {
+        border-bottom-color: var(--primary);
+        color: var(--primary);
+    }
+    
+    .notification {
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        background: var(--card-bg);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 1rem;
+        z-index: 1000;
+        max-width: 300px;
+        transform: translateX(120%);
+        transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+        border-left: 4px solid var(--primary);
+    }
+    
+    .notification.show {
+        transform: translateX(0);
+    }
+    
+    .notification-title {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        color: var(--text);
+        transition: var(--transition);
+    }
+    
+    .notification-title i {
+        margin-right: 0.5rem;
+        color: var(--primary);
+        transition: var(--transition);
+    }
+    
+    .notification-message {
+        color: var(--text-light);
+        transition: var(--transition);
+    }
+    
+    .search-bar {
+        display: flex;
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+    
+    .search-input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius) 0 0 var(--radius);
+            font-size: 1rem;
+            background-color: var(--card-bg);
+            color: var(--text);
+            transition: var(--transition);
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .search-btn {
+            padding: 0 1.2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .search-btn:hover {
+            background: var(--primary-dark);
+        }
+        
+        .suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-top: none;
+            border-radius: 0 0 var(--radius) var(--radius);
+            z-index: 10;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            box-shadow: var(--shadow);
+        }
+        
+        .suggestions.active {
+            display: block;
+        }
+        
+        .suggestion-item {
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text);
+        }
+        
+        .suggestion-item:hover {
+            background-color: var(--background);
+            color: var(--primary);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(3px);
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+            box-shadow: var(--shadow);
+            color: var(--text);
+            transition: var(--transition);
+            animation: modalFadeIn 0.3s ease;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: var(--transition);
+        }
+        
+        .modal-close:hover {
+            color: var(--primary);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text);
+            transition: var(--transition);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            background-color: var(--card-bg);
+            color: var(--text);
+            transition: var(--transition);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        /* Filter styles */
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .filter-tag {
+            padding: 0.4rem 0.8rem;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text);
+        }
+        
+        .filter-tag:hover, .filter-tag.active {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        
+        /* Rating stars */
+        .stars {
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .star {
+            color: #ddd;
+            transition: var(--transition);
+        }
+        
+        .star.filled {
+            color: #FFD700;
+        }
+        
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.6rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .badge-success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .badge-info {
+            background-color: var(--info);
+            color: white;
+        }
+        
+        .badge-warning {
+            background-color: var(--warning);
+            color: white;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 576px) {
+            .section-title {
+                text-align: center;
+            }
+            
+            .section-title::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+        
+        /* Icon */
+        .icon {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <h3 id="user-welcome"></h3>
+
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-utensils logo-icon"></i>
+                <h1>QuickBite</h1>
+            </div>
+            <div class="nav-actions">
+                <button id="theme-toggle" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" class="search-input" id="search-input" placeholder="Search for restaurants or dishes...">
+            <button class="search-btn" onclick="searchItems()"><i class="fas fa-search"></i></button>
+            <div class="suggestions" id="search-suggestions"></div>
+        </div>
+        
+        <div class="filter-container" id="category-filters">
+            <div class="filter-tag active" data-category="all">All</div>
+            <div class="filter-tag" data-category="Pizza">Pizza</div>
+            <div class="filter-tag" data-category="Burgers">Burgers</div>
+            <div class="filter-tag" data-category="Mexican">Mexican</div>
+            <div class="filter-tag" data-category="Healthy">Healthy</div>
+            <div class="filter-tag" data-category="Fast Food">Fast Food</div>
+        </div>
+
+        <h2 class="section-title">Popular Restaurants</h2>
+        <div class="grid" id="restaurant-grid">
+            <!-- Restaurants will be loaded here -->
+        </div>
+
+        <div class="two-column">
+            <div>
+                <h2 class="section-title" id="current-restaurant">Menu</h2>
+                <div class="tabs" id="menu-tabs">
+                    <!-- Menu categories will be loaded here -->
+                </div>
+                <div id="menu-container">
+                    <!-- Menu items will be displayed here -->
+                </div>
+            </div>
+            
+            <div class="cart-container">
+                <h2 class="section-title">Your Order</h2>
+                <div id="cart">
+                    <ul id="cart-items">
+                        <!-- Cart items will be displayed here -->
+                    </ul>
+                    <div class="cart-summary">
+                        <div class="cart-total">
+                            <span>Total:</span>
+                            <span id="cart-total">$0.00</span>
+                        </div>
+                        <button class="btn btn-icon" id="checkout-btn" onclick="openCheckoutModal()">
+                            <i class="fas fa-shopping-cart"></i> Checkout
+                        </button>
+                        <br>
+                        <button onclick="viewOrders()" class="btn">View My Orders</button>
+                        <div id="order-history"></div>
+                        <br>
+                        <button onclick="checkServerLoad()" class="btn">Check Server Load</button>
+                            <div id="server-load"></div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div class="notification-title">
+            <i class="fas fa-check-circle"></i>
+            <span id="notification-title">Success</span>
+        </div>
+        <p id="notification-message" class="notification-message"></p>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal" id="checkout-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('checkout-modal')">&times;</button>
+            <h2 class="section-title">Complete Your Order</h2>
+            <form id="checkout-form">
+                <div class="form-group">
+                    <label class="form-label" for="name">Full Name</label>
+                    <input type="text" id="name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="address">Delivery Address</label>
+                    <input type="text" id="address" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="phone">Phone Number</label>
+                    <input type="tel" id="phone" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="payment">Payment Method</label>
+                    <select id="payment" class="form-control" required>
+                        <option value="">Select payment method</option>
+                        <option value="card">Credit Card</option>
+                        <option value="cash">Cash on Delivery</option>
+                        <option value="wallet">Digital Wallet</option>
+                    </select>
+                </div>
+                <div id="card-details" class="form-group" style="display: none;">
+                    <label class="form-label" for="card-number">Card Number</label>
+                    <input type="text" id="card-number" class="form-control" placeholder="1234 5678 9012 3456">
+                    <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                        <div style="flex: 1;">
+                            <label class="form-label" for="expiry">Expiry Date</label>
+                            <input type="text" id="expiry" class="form-control" placeholder="MM/YY">
+                        </div>
+                        <div style="flex: 1;">
+                            <label class="form-label" for="cvv">CVV</label>
+                            <input type="text" id="cvv" class="form-control" placeholder="123">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="notes">Delivery Instructions (Optional)</label>
+                    <textarea id="notes" class="form-control" rows="3" placeholder="Special instructions for delivery"></textarea>
+                </div>
+                <button onclick="placeOrder()" type="submit" class="btn btn-icon">
+                    <i class="fas fa-check-circle"></i> Place Order
+                </button>
+                <div id="order-status" style="margin-top: 10px;"></div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Restaurant Details Modal -->
+    <div class="modal" id="restaurant-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('restaurant-modal')">&times;</button>
+            <div id="restaurant-details">
+                <!-- Restaurant details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+document.addEventListener("DOMContentLoaded", function() {
+    const userEmail = localStorage.getItem("userEmail");
+    if (!userEmail) {
+        alert("You must log in first!");
+        window.location.href = "login.html"; // Redirect if not logged in
+    } else {
+        document.getElementById("user-welcome").innerText = `Welcome, ${userEmail}`;
+    }
+});
+
+        // Enhanced restaurant and menu data
+        const restaurants = [
+            {
+                id: "pizza-hut",
+                name: "Pizza Hut",
+                rating: 4.5,
+                deliveryTime: "25-35",
+                image: "PizzaHut.png",
+                categories: ["Pizza", "Italian", "Fast Food"],
+                description: "Enjoy Pizza Hut's famous pizzas, pasta, and wings. Known for quality ingredients and diverse menu options.",
+                address: "123 Main St, Anytown",
+                openHours: "10:00 AM - 11:00 PM",
+                minimumOrder: 15,
+                deliveryFee: 2.99,
+                featured: true
+            },
+            {
+                id: "mcdonalds",
+                name: "McDonald's",
+                rating: 4.2,
+                deliveryTime: "15-25",
+                image: "Mcdonald's.png",
+                categories: ["Burgers", "Fast Food"],
+                description: "Everyone's favorite burgers, fries and more. Quick service and consistent quality with a variety of meal options.",
+                address: "456 Oak Ave, Anytown",
+                openHours: "6:00 AM - 12:00 AM",
+                minimumOrder: 10,
+                deliveryFee: 1.99,
+                featured: true
+            },
+            {
+                id: "subway",
+                name: "Subway",
+                rating: 4.0,
+                deliveryTime: "20-30",
+                image: "Subway.png",
+                categories: ["Sandwiches", "Healthy"],
+                description: "Fresh, made-to-order sandwiches and salads. Customize your meal with a variety of fresh ingredients.",
+                address: "789 Pine St, Anytown",
+                openHours: "7:00 AM - 10:00 PM",
+                minimumOrder: 12,
+                deliveryFee: 2.49,
+                featured: false
+            },
+            {
+                id: "taco-bell",
+                name: "Taco Bell",
+                rating: 3.8,
+                deliveryTime: "15-25",
+                image: "TacoBell.png",
+                categories: ["Mexican", "Fast Food"],
+                description: "Mexican-inspired fast food featuring tacos, burritos, quesadillas and more at value prices.",
+                address: "101 Elm St, Anytown",
+                openHours: "10:00 AM - 2:00 AM",
+                minimumOrder: 8,
+                deliveryFee: 1.99,
+                featured: false
+            },
+            {
+                id: "chipotle",
+                name: "Chipotle",
+                rating: 4.6,
+                deliveryTime: "20-30",
+                image: "Chipotle.png",
+                categories: ["Mexican", "Healthy"],
+                description: "Fresh Mexican grill serving responsibly sourced, high-quality ingredients prepared using classic cooking techniques.",
+                address: "234 Maple Ave, Anytown",
+                openHours: "10:30 AM - 10:00 PM",
+                minimumOrder: 15,
+                deliveryFee: 2.99,
+                featured: true
+            },
+            {
+                id: "panera-bread",
+                name: "Panera Bread",
+                rating: 4.4,
+                deliveryTime: "25-35",
+                image: "PaneraBread.png",
+                categories: ["Sandwiches", "Healthy", "Bakery"],
+                description: "Casual bakery-café serving soups, salads, sandwiches, and pastries in a warm atmosphere.",
+                address: "567 Cherry Lane, Anytown",
+                openHours: "6:30 AM - 9:00 PM",
+                minimumOrder: 12,
+                deliveryFee: 2.49,
+                featured: false
+            },
+            {
+                id: "kfc",
+                name: "KFC",
+                rating: 4.3,
+                deliveryTime: "20-30",
+                image: "KFC.png",
+                categories: ["Chicken", "Fast Food"],
+                description: "Crispy fried chicken, delicious sides, and refreshing drinks. Finger-licking good!",
+                address: "789 Main St, Anytown",
+                openHours: "10:00 AM - 11:00 PM",
+                minimumOrder: 12,
+                deliveryFee: 2.49,
+                featured: false
+            },
+            {
+                id: "dominos",
+                name: "Domino's Pizza",
+                rating: 4.5,
+                deliveryTime: "15-25",
+                image: "Dominos.png",
+                categories: ["Pizza", "Fast Food"],
+                description: "Delicious pizzas with a variety of toppings, sides, and desserts. Hot and fresh delivery!",
+                address: "123 Pizza Ln, Anytown",
+                openHours: "10:30 AM - 1:00 AM",
+                minimumOrder: 8,
+                deliveryFee: 1.99,
+                featured: true
+            },
+            {
+                id: "starbucks",
+                name: "Starbucks",
+                rating: 4.5,
+                deliveryTime: "10-15",
+                image: "Starbucks.png",
+                categories: ["Coffee", "Bakery"],
+                description: "Premium coffee, handcrafted drinks, and delicious bakery items.",
+                address: "345 Brew St, Anytown",
+                openHours: "6:00 AM - 9:00 PM",
+                minimumOrder: 5,
+                deliveryFee: 1.49,
+                featured: true
+            },
+            {
+                id: "burgerking",
+                name: "Burger King",
+                rating: 4.2,
+                deliveryTime: "15-25",
+                image: "BurgerKing.png",
+                categories: ["Burgers", "Fast Food"],
+                description: "Home of the Whopper, offering flame-grilled burgers, fries, and more.",
+                address: "123 Flame St, Anytown",
+                openHours: "6:30 AM - 11:00 PM",
+                minimumOrder: 10,
+                deliveryFee: 1.99,
+                featured: false
+            },
+            {
+                id: "wendys",
+                name: "Wendy's",
+                rating: 4.3,
+                deliveryTime: "20-30",
+                image: "wendi.png",
+                categories: ["Burgers", "Fast Food"],
+                description: "Famous for fresh, never frozen beef burgers and sea salt fries.",
+                address: "678 Fresh Ave, Anytown",
+                openHours: "6:00 AM - 12:00 AM",
+                minimumOrder: 10,
+                deliveryFee: 2.49,
+                featured: false
+            },
+            {
+                id: "popeyes",
+                name: "Popeyes",
+                rating: 4.1,
+                deliveryTime: "25-35",
+                image: "Popeyes.png",
+                categories: ["Chicken", "Fast Food"],
+                description: "Crispy fried chicken, buttery biscuits, and Cajun-inspired flavors.",
+                address: "789 Southern St, Anytown",
+                openHours: "10:00 AM - 11:00 PM",
+                minimumOrder: 12,
+                deliveryFee: 2.99,
+                featured: true
+            },
+            {
+                id: "dunkindonuts",
+                name: "Dunkin' Donuts",
+                rating: 4.4,
+                deliveryTime: "10-20",
+                image: "DunkinDonuts.png",
+                categories: ["Coffee", "Bakery"],
+                description: "America's favorite coffee and donuts with a variety of breakfast options.",
+                address: "345 Donut St, Anytown",
+                openHours: "5:30 AM - 8:00 PM",
+                minimumOrder: 5,
+                deliveryFee: 1.49,
+                featured: false
+            },
+            {
+                id: "arbys",
+                name: "Arby's",
+                rating: 4.0,
+                deliveryTime: "15-25",
+                image: "Arbys.png",
+                categories: ["Sandwiches", "Fast Food"],
+                description: "We have the meats! Enjoy freshly sliced roast beef sandwiches and curly fries.",
+                address: "456 Meat St, Anytown",
+                openHours: "10:00 AM - 10:00 PM",
+                minimumOrder: 8,
+                deliveryFee: 2.29,
+                featured: false
+            },
+            {
+                id: "fiveguys",
+                name: "Five Guys",
+                rating: 4.5,
+                deliveryTime: "20-30",
+                image: "FiveGuys.png",
+                categories: ["Burgers", "Fast Food"],
+                description: "Handcrafted burgers, fresh-cut fries, and unlimited toppings.",
+                address: "567 Patty Ave, Anytown",
+                openHours: "10:30 AM - 10:00 PM",
+                minimumOrder: 12,
+                deliveryFee: 2.79,
+                featured: true
+            }
+        ];
+
+        const menuItems = {
+            "pizza-hut": {
+                "Popular": [
+                    {
+                        id: "ph-pepperoni",
+                        name: "Pepperoni Pizza",
+                        description: "Classic pepperoni pizza with mozzarella cheese and tomato sauce.",
+                        price: 12.99,
+                        image: "PepperoniPizza.jpeg"
+                    },
+                    {
+                        id: "ph-supreme",
+                        name: "Supreme Pizza",
+                        description: "Loaded with pepperoni, sausage, bell peppers, onions, and mushrooms.",
+                        price: 14.99,
+                        image: "SupremePizza.jpeg"
+                    }
+                ],
+                "Pizzas": [
+                    {
+                        id: "ph-cheese",
+                        name: "Cheese Pizza",
+                        description: "Simple yet delicious pizza with extra cheese and tomato sauce.",
+                        price: 10.99,
+                        image: "ChesePizza.jpeg"
+                    },
+                    {
+                        id: "ph-veggie",
+                        name: "Veggie Pizza",
+                        description: "Topped with bell peppers, onions, mushrooms, and black olives.",
+                        price: 13.99,
+                        image: "VeggiePizza.jpeg"
+                    },
+                    {
+                        id: "ph-meat",
+                        name: "Meat Lovers",
+                        description: "For meat lovers with pepperoni, sausage, bacon, and ham.",
+                        price: 15.99,
+                        image: "MeetPizza.jpeg"
+                    }
+                ],
+                "Sides": [
+                    {
+                        id: "ph-wings",
+                        name: "Buffalo Wings",
+                        description: "Spicy buffalo wings served with ranch dressing.",
+                        price: 8.99,
+                        image: "BuffaloWings.jpg"
+                    },
+                    {
+                        id: "ph-breadsticks",
+                        name: "Breadsticks",
+                        description: "Warm breadsticks with garlic butter and marinara sauce.",
+                        price: 5.99,
+                        image: "Breadsticks.jpeg"
+                    }
+                ]
+            },
+            "mcdonalds": {
+                "Popular": [
+                    {
+                        id: "mc-bigmac",
+                        name: "Big Mac",
+                        description: "Iconic burger with two beef patties, special sauce, lettuce, cheese, pickles, and onions on a sesame seed bun.",
+                        price: 5.99,
+                        image: "https://via.placeholder.com/300x200.png?text=Big+Mac"
+                    },
+                    {
+                        id: "mc-nuggets",
+                        name: "Chicken McNuggets (10pc)",
+                        description: "Tender, juicy chicken nuggets with your choice of dipping sauce.",
+                        price: 6.99,
+                        image: "https://via.placeholder.com/300x200.png?text=Chicken+McNuggets"
+                    }
+                ],
+                "Burgers": [
+                    {
+                        id: "mc-quarterpounder",
+                        name: "Quarter Pounder with Cheese",
+                        description: "Quarter pound beef patty with cheese, onions, pickles, and condiments.",
+                        price: 6.49,
+                        image: "https://via.placeholder.com/300x200.png?text=Quarter+Pounder"
+                    },
+                    {
+                        id: "mc-mcdouble",
+                        name: "McDouble",
+                        description: "Two beef patties with cheese, onions, pickles, ketchup and mustard.",
+                        price: 3.99,
+                        image: "https://via.placeholder.com/300x200.png?text=McDouble"
+                    }
+                ],
+                "Sides": [
+                    {
+                        id: "mc-fries",
+                        name: "French Fries",
+                        description: "Golden, crispy french fries, perfectly salted.",
+                        price: 2.99,
+                        image: "https://via.placeholder.com/300x200.png?text=French+Fries"
+                    },
+                    {
+                        id: "mc-apple-pie",
+                        name: "Apple Pie",
+                        description: "Crispy pastry filled with warm apple filling.",
+                        price: 1.99,
+                        image: "https://via.placeholder.com/300x200.png?text=Apple+Pie"
+                    }
+                ]
+            },
+            "subway": {
+                "Popular": [
+                    {
+                        id: "sub-italian",
+                        name: "Italian B.M.T.",
+                        description: "Genoa salami, spicy pepperoni, and Black Forest ham with vegetables and condiments.",
+                        price: 8.99,
+                        image: "https://via.placeholder.com/300x200.png?text=Italian+BMT"
+                    },
+                    {
+                        id: "sub-turkey",
+                        name: "Turkey Breast",
+                        description: "Sliced turkey breast with vegetables and condiments of your choice.",
+                        price: 7.99,
+                        image: "https://via.placeholder.com/300x200.png?text=Turkey+Breast"
+                    }
+                ],
+                "Sandwiches": [
+                    {
+                        id: "sub-veggie",
+                        name: "Veggie Delite",
+                        description: "Loads of vegetables with your choice of condiments and cheese.",
+                        price: 6.99,
+                        image: "https://via.placeholder.com/300x200.png?text=Veggie+Delite"
+                    },
+                    {
+                        id: "sub-tuna",
+                        name: "Tuna",
+                        description: "Flaked tuna mixed with mayo, vegetables and condiments.",
+                        price: 7.99,
+                        image: "https://via.placeholder.com/300x200.png?text=Tuna"
+                    }
+                ],
+                "Salads": [
+                    {
+                        id: "sub-salad-turkey",
+                        name: "Turkey Breast Salad",
+                        description: "Turkey breast on a bed of fresh vegetables.",
+                        price: 8.49,
+                        image: "https://via.placeholder.com/300x200.png?text=Turkey+Salad"
+                    },
+                    {
+                        id: "sub-salad-veggie",
+                        name: "Veggie Delite Salad",
+                        description: "Fresh vegetables with your choice of dressing.",
+                        price: 7.49,
+                        image: "https://via.placeholder.com/300x200.png?text=Veggie+Salad"
+                    }
+                ]
+            },
+            "taco-bell": {
+                "Popular": [
+                    {
+                        id: "tb-crunchwrap",
+                        name: "Crunchwrap Supreme",
+                        description: "A flour tortilla wrapped around seasoned beef, nacho cheese sauce, lettuce, tomatoes, and a crunchy tostada shell.",
+                        price: 5.99,
+                        image: "https://via.placeholder.com/300x200.png?text=Crunchwrap+Supreme"
+                    },
+                    {
+                        id: "tb-quesadilla",
+                        name: "Chicken Quesadilla",
+                        description: "Grilled chicken and melted cheese in a folded flour tortilla.",
+                        price: 4.99,
+                        image: "https://via.placeholder.com/300x200.png?text=Chicken+Quesadilla"
+                    }
+                ],
+                "Tacos": [
+                    {
+                        id: "tb-crunchy",
+                        name: "Crunchy Taco",
+                        description: "Seasoned beef, lettuce, and cheese in a crunchy corn shell.",
+                        price: 1.99,
+                        image: "https://via.placeholder.com/300x200.png?text=Crunchy+Taco"
+                    },
+                    {
+                        id: "tb-soft",
+                        name: "Soft Taco",
+                        description: "Seasoned beef, lettuce, and cheese in a soft flour tortilla.",
+                        price: 1.99,
+                        image: "https://via.placeholder.com/300x200.png?text=Soft+Taco"
+                    }
+                ],
+                "Burritos": [
+                    {
+                        id: "tb-5layer",
+                        name: "5-Layer Burrito",
+                        description: "Seasoned beef, refried beans, cheese, sour cream, and nacho cheese sauce wrapped in a flour tortilla.",
+                        price: 3.99,
+                        image: "https://via.placeholder.com/300x200.png?text=5Layer+Burrito"
+                    },
+                    {
+                        id: "tb-bean",
+                        name: "Bean Burrito",
+                        description: "Refried beans, cheese, onions, and red sauce wrapped in a flour tortilla.",
+                        price: 2.49,
+                        image: "https://via.placeholder.com/300x200.png?text=Bean+Burrito"
+                    }
+                ]
+            },
+            "chipotle": {
+                "Popular": [
+                    {
+                        id: "ch-bowl",
+                        name: "Burrito Bowl",
+                        description: "Your choice of protein with rice, beans, and toppings in a bowl.",
+                        price: 9.99,
+                        image: "https://via.placeholder.com/300x200.png?text=Burrito+Bowl"
+                    },
+                    {
+                        id: "ch-burrito",
+                        name: "Burrito",
+                        description: "Your choice of protein with rice, beans, and toppings wrapped in a flour tortilla.",
+                        price: 9.99,
+                        image: "https://via.placeholder.com/300x200.png?text=Burrito"
+                    }
+                ],
+                "Entrees": [
+                    {
+                        id: "ch-tacos",
+                        name: "Tacos (3)",
+                        description: "Three tacos with your choice of protein and toppings.",
+                        price: 9.99,
+                        image: "https://via.placeholder.com/300x200.png?text=Tacos"
+                    },
+                    {
+                        id: "ch-salad",
+                        name: "Salad",
+                        description: "Your choice of protein with lettuce and toppings.",
+                        price: 9.99,
+                        image: "https://via.placeholder.com/300x200.png?text=Salad"
+                    }
+                ],
+                "Sides": [
+                    {
+                        id: "ch-chips-guac",
+                        name: "Chips & Guacamole",
+                        description: "Crispy tortilla chips with freshly made guacamole.",
+                        price: 4.99,
+                        image: "https://via.placeholder.com/300x200.png?text=Chips+Guacamole"
+                    },
+                    {
+                        id: "ch-chips-queso",
+                        name: "Chips & Queso",
+                        description: "Crispy tortilla chips with queso dip.",
+                        price: 4.49,
+                        image: "https://via.placeholder.com/300x200.png?text=Chips+Queso"
+                    }
+                ]
+            },
+            "panera-bread": {
+                "Popular": [
+                    {
+                        id: "pb-bread-bowl",
+                        name: "Broccoli Cheddar Soup in Bread Bowl",
+                        description: "Creamy broccoli cheddar soup served in a sourdough bread bowl.",
+                        price: 8.99,
+                        image: "https://via.placeholder.com/300x200.png?text=Bread+Bowl"
+                    },
+                    {
+                        id: "pb-mac-cheese",
+                        name: "Mac & Cheese",
+                        description: "Shell pasta in a blend of rich cheeses.",
+                        price: 7.99,
+                        image: "https://via.placeholder.com/300x200.png?text=Mac+Cheese"
+                    }
+                ],
+                "Sandwiches": [
+                    {
+                        id: "pb-turkey-avocado",
+                        name: "Turkey Avocado BLT",
+                        description: "Turkey breast, bacon, lettuce, tomatoes, and avocado on sourdough bread.",
+                        price: 9.99,
+                        image: "https://via.placeholder.com/300x200.png?text=Turkey+Avocado"
+                    },
+                    {
+                        id: "pb-mediterranean",
+                        name: "Mediterranean Veggie",
+                        description: "Zesty sweet Peppadew™ piquant peppers, feta, cucumbers, lettuce, tomatoes, onions, and hummus on tomato basil bread.",
+                        price: 8.99,
+                        image: "https://via.placeholder.com/300x200.png?text=Mediterranean+Veggie"
+                    }
+                ],
+                "Salads": [
+                    {
+                        id: "pb-greek",
+                        name: "Greek Salad",
+                        description: "Romaine, grape tomatoes, feta, onions, kalamata olives, and Greek dressing.",
+                        price: 9.49,
+                        image: "https://via.placeholder.com/300x200.png?text=Greek+Salad"
+                    },
+                    {
+                        id: "pb-caesar",
+                        name: "Caesar Salad",
+                        description: "Romaine, parmesan, and caesar dressing with homemade croutons.",
+                        price: 8.49,
+                        image: "https://via.placeholder.com/300x200.png?text=Caesar+Salad"
+                    }
+                ]
+            },
+            "kfc": {
+                "Buckets": [
+                    {
+                        "id": "kfc-8pc-bucket",
+                        "name": "8-Piece Chicken Bucket",
+                        "description": "Crispy fried chicken pieces with original or extra crispy seasoning.",
+                        "price": 14.99,
+                        "image": "https://via.placeholder.com/300x200.png?text=8-Piece+Chicken+Bucket"
+                    },
+                    {
+                        "id": "kfc-12pc-bucket",
+                        "name": "12-Piece Chicken Bucket",
+                        "description": "A larger bucket with 12 crispy chicken pieces.",
+                        "price": 19.99,
+                        "image": "https://via.placeholder.com/300x200.png?text=12-Piece+Chicken+Bucket"
+                    }
+                ],
+                "Sandwiches": [
+                    {
+                        "id": "kfc-chicken-sandwich",
+                        "name": "KFC Chicken Sandwich",
+                        "description": "Crispy fried chicken filet with pickles and mayo on a brioche bun.",
+                        "price": 5.99,
+                        "image": "https://via.placeholder.com/300x200.png?text=KFC+Chicken+Sandwich"
+                    },
+                    {
+                        "id": "kfc-zinger",
+                        "name": "Zinger Burger",
+                        "description": "Spicy fried chicken fillet, lettuce, and mayo on a soft bun.",
+                        "price": 6.49,
+                        "image": "https://via.placeholder.com/300x200.png?text=Zinger+Burger"
+                    }
+                ]
+            },
+            "dominos": {
+                "Pizza": [
+                    {
+                        "id": "dominos-pepperoni",
+                        "name": "Pepperoni Pizza",
+                        "description": "Classic pizza topped with pepperoni and mozzarella cheese.",
+                        "price": 12.99,
+                        "image": "https://via.placeholder.com/300x200.png?text=Pepperoni+Pizza"
+                    },
+                    {
+                        "id": "dominos-margherita",
+                        "name": "Margherita Pizza",
+                        "description": "Tomato sauce, fresh mozzarella, and basil on a thin crust.",
+                        "price": 10.99,
+                        "image": "https://via.placeholder.com/300x200.png?text=Margherita+Pizza"
+                    }
+                ],
+                "Sides": [
+                    {
+                        "id": "dominos-breadsticks",
+                        "name": "Garlic Breadsticks",
+                        "description": "Warm breadsticks brushed with garlic butter.",
+                        "price": 4.99,
+                        "image": "https://via.placeholder.com/300x200.png?text=Garlic+Breadsticks"
+                    },
+                    {
+                        "id": "dominos-wings",
+                        "name": "Buffalo Wings",
+                        "description": "Spicy buffalo chicken wings served with ranch sauce.",
+                        "price": 6.99,
+                        "image": "https://via.placeholder.com/300x200.png?text=Buffalo+Wings"
+                    }
+                ]
+            },
+            "starbucks": {
+                "Drinks": [
+                    {
+                        "id": "sbx-latte",
+                        "name": "Caffè Latte",
+                        "description": "Espresso with steamed milk and a light layer of foam.",
+                        "price": 4.99,
+                        "image": "https://via.placeholder.com/300x200.png?text=Caffe+Latte"
+                    },
+                    {
+                        "id": "sbx-frappuccino",
+                        "name": "Caramel Frappuccino",
+                        "description": "Blended coffee drink with caramel and whipped cream.",
+                        "price": 5.49,
+                        "image": "https://via.placeholder.com/300x200.png?text=Caramel+Frappuccino"
+                    }
+                ],
+                "Bakery": [
+                    {
+                        "id": "sbx-croissant",
+                        "name": "Butter Croissant",
+                        "description": "Flaky, buttery croissant, freshly baked.",
+                        "price": 3.49,
+                        "image": "https://via.placeholder.com/300x200.png?text=Butter+Croissant"
+                    },
+                    {
+                        "id": "sbx-blueberry-muffin",
+                        "name": "Blueberry Muffin",
+                        "description": "Soft muffin packed with juicy blueberries.",
+                        "price": 3.99,
+                        "image": "https://via.placeholder.com/300x200.png?text=Blueberry+Muffin"
+                    }
+                ]
+            },
+            "burgerking": {
+                "Burgers": [
+                    {
+                        "id": "bk-whopper",
+                        "name": "Whopper",
+                        "description": "Flame-grilled beef patty with lettuce, tomato, mayo, and pickles.",
+                        "price": 6.99,
+                        "image": "https://via.placeholder.com/300x200.png?text=Whopper"
+                    },
+                    {
+                        "id": "bk-double-cheeseburger",
+                        "name": "Double Cheeseburger",
+                        "description": "Two beef patties with melted cheese, pickles, and ketchup.",
+                        "price": 5.99,
+                        "image": "https://via.placeholder.com/300x200.png?text=Double+Cheeseburger"
+                    }
+                ],
+                "Sides": [
+                    {
+                        "id": "bk-fries",
+                        "name": "French Fries",
+                        "description": "Golden crispy fries, lightly salted.",
+                        "price": 2.99,
+                        "image": "https://via.placeholder.com/300x200.png?text=French+Fries"
+                    },
+                    {
+                        "id": "bk-onion-rings",
+                        "name": "Onion Rings",
+                        "description": "Crispy onion rings served with zesty sauce.",
+                        "price": 3.49,
+                        "image": "https://via.placeholder.com/300x200.png?text=Onion+Rings"
+                    }
+                ]
+            },
+            "fiveguys": {
+                "Burgers": [
+                    {
+                        "id": "fiveguys-cheeseburger",
+                        "name": "Cheeseburger",
+                        "description": "Double patty burger with melted cheese and fresh toppings.",
+                        "price": 8.99,
+                        "image": "https://via.placeholder.com/300x200.png?text=Cheeseburger"
+                    },
+                    {
+                        "id": "fiveguys-bacon-burger",
+                        "name": "Bacon Burger",
+                        "description": "Juicy beef patty topped with crispy bacon and cheese.",
+                        "price": 9.49,
+                        "image": "https://via.placeholder.com/300x200.png?text=Bacon+Burger"
+                    }
+                ],
+                "Fries": [
+                    {
+                        "id": "fiveguys-fries",
+                        "name": "Cajun Fries",
+                        "description": "Fresh-cut fries seasoned with Cajun spices.",
+                        "price": 3.99,
+                        "image": "https://via.placeholder.com/300x200.png?text=Cajun+Fries"
+                    },
+                    {
+                        "id": "fiveguys-regular-fries",
+                        "name": "Regular Fries",
+                        "description": "Fresh-cut fries, lightly salted and cooked in peanut oil.",
+                        "price": 3.99,
+                        "image": "https://via.placeholder.com/300x200.png?text=Regular+Fries"
+                    }
+                ]
+            },
+            "dunkindonuts": {
+                "Coffee": [
+                    {
+                        "id": "dd-iced-coffee",
+                        "name": "Iced Coffee",
+                        "description": "Cold-brewed coffee served over ice with your choice of milk and sweetener.",
+                        "price": 3.99,
+                        "image": "https://via.placeholder.com/300x200.png?text=Iced+Coffee"
+                    },
+                    {
+                        "id": "dd-latte",
+                        "name": "Hot Latte",
+                        "description": "Espresso with steamed milk and a light layer of foam.",
+                        "price": 4.49,
+                        "image": "https://via.placeholder.com/300x200.png?text=Hot+Latte"
+                    }
+                ],
+                "Donuts": [
+                    {
+                        "id": "dd-glazed-donut",
+                        "name": "Glazed Donut",
+                        "description": "Classic yeast donut with a sweet sugar glaze.",
+                        "price": 1.49,
+                        "image": "https://via.placeholder.com/300x200.png?text=Glazed+Donut"
+                    },
+                    {
+                        "id": "dd-boston-kreme",
+                        "name": "Boston Kreme Donut",
+                        "description": "Chocolate-covered donut with creamy custard filling.",
+                        "price": 1.79,
+                        "image": "https://via.placeholder.com/300x200.png?text=Boston+Kreme+Donut"
+                    }
+                ]
+            },
+            "arbys": {
+                "Sandwiches": [
+                    {
+                        "id": "arbys-classic-roast-beef",
+                        "name": "Classic Roast Beef",
+                        "description": "Thinly sliced roast beef on a toasted sesame seed bun.",
+                        "price": 4.99,
+                        "image": "https://via.placeholder.com/300x200.png?text=Classic+Roast+Beef"
+                    },
+                    {
+                        "id": "arbys-beef-cheddar",
+                        "name": "Beef 'n Cheddar",
+                        "description": "Roast beef with cheddar cheese sauce on an onion roll.",
+                        "price": 5.99,
+                        "image": "https://via.placeholder.com/300x200.png?text=Beef+n+Cheddar"
+                    }
+                ],
+                "Sides": [
+                    {
+                        "id": "arbys-curly-fries",
+                        "name": "Curly Fries",
+                        "description": "Seasoned and crispy curly fries.",
+                        "price": 2.99,
+                        "image": "https://via.placeholder.com/300x200.png?text=Curly+Fries"
+                    },
+                    {
+                        "id": "arbys-mozzarella-sticks",
+                        "name": "Mozzarella Sticks",
+                        "description": "Breaded and fried mozzarella cheese sticks served with marinara sauce.",
+                        "price": 4.49,
+                        "image": "https://via.placeholder.com/300x200.png?text=Mozzarella+Sticks"
+                    }
+                ]
+            },
+            "wendys": {
+                "Burgers": [
+                    {
+                        "id": "wendys-baconator",
+                        "name": "Baconator",
+                        "description": "Two beef patties, six strips of bacon, cheese, and mayo on a toasted bun.",
+                        "price": 7.99,
+                        "image": "https://via.placeholder.com/300x200.png?text=Baconator"
+                    },
+                    {
+                        "id": "wendys-jr-cheeseburger",
+                        "name": "Jr. Cheeseburger",
+                        "description": "Small beef patty with cheese, pickles, ketchup, and mustard.",
+                        "price": 2.49,
+                        "image": "https://via.placeholder.com/300x200.png?text=Jr+Cheeseburger"
+                    }
+                ],
+                "Chicken": [
+                    {
+                        "id": "wendys-spicy-chicken",
+                        "name": "Spicy Chicken Sandwich",
+                        "description": "Crispy, spicy chicken filet with lettuce and mayo on a toasted bun.",
+                        "price": 5.99,
+                        "image": "https://via.placeholder.com/300x200.png?text=Spicy+Chicken+Sandwich"
+                    },
+                    {
+                        "id": "wendys-nuggets",
+                        "name": "Chicken Nuggets",
+                        "description": "Crispy, golden-brown chicken nuggets with your choice of dipping sauce.",
+                        "price": 3.99,
+                        "image": "https://via.placeholder.com/300x200.png?text=Chicken+Nuggets"
+                    }
+                ]
+            },
+            "popeyes": {
+                "Chicken": [
+                    {
+                        "id": "popeyes-chicken-sandwich",
+                        "name": "Chicken Sandwich",
+                        "description": "Crispy fried chicken filet with pickles and mayo on a brioche bun.",
+                        "price": 5.49,
+                        "image": "https://via.placeholder.com/300x200.png?text=Chicken+Sandwich"
+                    },
+                    {
+                        "id": "popeyes-3pc-tenders",
+                        "name": "3-Piece Chicken Tenders",
+                        "description": "Three crispy chicken tenders with your choice of dipping sauce.",
+                        "price": 6.49,
+                        "image": "https://via.placeholder.com/300x200.png?text=3-Piece+Chicken+Tenders"
+                    }
+                ],
+                "Sides": [
+                    {
+                        "id": "popeyes-cajun-fries",
+                        "name": "Cajun Fries",
+                        "description": "Spicy, seasoned fries with a crispy texture.",
+                        "price": 2.99,
+                        "image": "https://via.placeholder.com/300x200.png?text=Cajun+Fries"
+                    },
+                    {
+                        "id": "popeyes-biscuits",
+                        "name": "Buttermilk Biscuits",
+                        "description": "Flaky, buttery biscuits served warm.",
+                        "price": 1.49,
+                        "image": "https://via.placeholder.com/300x200.png?text=Buttermilk+Biscuits"
+                    }
+                ]
+            }
+        };
+
+        // Global cart array
+        let cart = [];
+        let currentRestaurant = null;
+
+        // DOM Ready
+        document.addEventListener('DOMContentLoaded', function() {
+            loadRestaurants();
+            updateCartDisplay();
+            setupEventListeners();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Theme toggle
+            document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+            
+            // Category filters
+            document.querySelectorAll('.filter-tag').forEach(tag => {
+                tag.addEventListener('click', function() {
+                    filterRestaurants(this.dataset.category);
+                });
+            });
+            
+            // Search input
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('focus', function() {
+                document.getElementById('search-suggestions').classList.add('active');
+            });
+            
+            searchInput.addEventListener('blur', function() {
+                setTimeout(() => {
+                    document.getElementById('search-suggestions').classList.remove('active');
+                }, 200);
+            });
+            
+            searchInput.addEventListener('input', function() {
+                if (this.value.length > 1) {
+                    showSuggestions(this.value);
+                } else {
+                    document.getElementById('search-suggestions').innerHTML = '';
+                }
+            });
+            
+            // Payment method change
+            const paymentSelect = document.getElementById('payment');
+            if (paymentSelect) {
+                paymentSelect.addEventListener('change', function() {
+                    const cardDetails = document.getElementById('card-details');
+                    if (this.value === 'card') {
+                        cardDetails.style.display = 'block';
+                    } else {
+                        cardDetails.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Checkout form submission
+            const checkoutForm = document.getElementById('checkout-form');
+            if (checkoutForm) {
+                checkoutForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    placeOrder();
+                });
+            }
+        }
+        function updateCartUI() {
+    const cartContainer = document.getElementById("cart-items");
+    const totalContainer = document.getElementById("cart-total");
+
+    if (!cartContainer || !totalContainer) {
+        console.error("Cart UI elements not found!");
+        return;
+    }
+
+    cartContainer.innerHTML = "";
+    let total = 0;
+
+    cart.forEach((item, index) => {
+        total += item.price * item.quantity;
+        cartContainer.innerHTML += `
+            <div>
+                ${item.name} - ₹${item.price} x ${item.quantity} 
+                <button onclick="removeFromCart(${index})">Remove</button>
+            </div>
+        `;
+    });
+
+    totalContainer.innerText = `Total: ₹${total}`;
+}
+
+
+        // Load and display restaurants
+        function loadRestaurants() {
+            const grid = document.getElementById('restaurant-grid');
+            grid.innerHTML = '';
+            
+            restaurants.forEach(restaurant => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <img src="${restaurant.image}" alt="${restaurant.name}" class="card-img">
+                    <div class="card-content">
+                        <h3 class="card-title">${restaurant.name}</h3>
+                        <div class="restaurant-info">
+                            <span><i class="fas fa-star"></i> ${restaurant.rating}</span>
+                            <span><i class="fas fa-clock"></i> ${restaurant.deliveryTime} min</span>
+                        </div>
+                        <div class="restaurant-info">
+                            ${restaurant.categories.map(cat => `<span class="badge badge-info">${cat}</span>`).join('')}
+                        </div>
+                        <div class="menu-price">
+                            <span>$${restaurant.minimumOrder} min</span>
+                            <button class="btn btn-sm" onclick="viewRestaurant('${restaurant.id}')">View Menu</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Filter restaurants by category
+        function filterRestaurants(category) {
+            const allFilters = document.querySelectorAll('.filter-tag');
+            allFilters.forEach(filter => {
+                filter.classList.remove('active');
+                if (filter.dataset.category === category) {
+                    filter.classList.add('active');
+                }
+            });
+            
+            const grid = document.getElementById('restaurant-grid');
+            grid.innerHTML = '';
+            
+            const filteredRestaurants = category === 'all' ? 
+                restaurants : 
+                restaurants.filter(restaurant => restaurant.categories.includes(category));
+            
+            if (filteredRestaurants.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <i class="fas fa-utensils empty-icon"></i>
+                        <p>No restaurants found for "${category}"</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            filteredRestaurants.forEach(restaurant => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <img src="${restaurant.image}" alt="${restaurant.name}" class="card-img">
+                    <div class="card-content">
+                        <h3 class="card-title">${restaurant.name}</h3>
+                        <div class="restaurant-info">
+                            <span><i class="fas fa-star"></i> ${restaurant.rating}</span>
+                            <span><i class="fas fa-clock"></i> ${restaurant.deliveryTime} min</span>
+                        </div>
+                        <div class="restaurant-info">
+                            ${restaurant.categories.map(cat => `<span class="badge badge-info">${cat}</span>`).join('')}
+                        </div>
+                        <div class="menu-price">
+                            <span>$${restaurant.minimumOrder} min</span>
+                            <button class="btn btn-sm" onclick="viewRestaurant('${restaurant.id}')">View Menu</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // View restaurant and display menu
+        function viewRestaurant(restaurantId) {
+            const restaurant = restaurants.find(r => r.id === restaurantId);
+            if (!restaurant) return;
+            
+            currentRestaurant = restaurantId;
+            
+            // Update current restaurant title
+            document.getElementById('current-restaurant').textContent = `${restaurant.name} Menu`;
+            
+            // Load menu tabs
+            const tabs = document.getElementById('menu-tabs');
+            tabs.innerHTML = '';
+            
+            const categories = Object.keys(menuItems[restaurantId]);
+            categories.forEach((category, index) => {
+                const tab = document.createElement('div');
+                tab.className = `tab ${index === 0 ? 'active' : ''}`;
+                tab.textContent = category;
+                tab.onclick = () => switchTab(category);
+                tabs.appendChild(tab);
+            });
+            
+            // Show the first category by default
+            showMenuCategory(categories[0]);
+            
+            // Show restaurant modal with details
+            showRestaurantDetails(restaurant);
+            
+            // Scroll to menu
+            document.getElementById('menu-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Show restaurant details in modal
+        function showRestaurantDetails(restaurant) {
+            const detailsContainer = document.getElementById('restaurant-details');
+            detailsContainer.innerHTML = `
+                <div style="text-align: center; margin-bottom: 1.5rem;">
+                    <img src="${restaurant.image}" alt="${restaurant.name}" style="width: 100%; max-height: 200px; object-fit: cover; border-radius: var(--radius);">
+                    <h2 style="margin-top: 1rem;">${restaurant.name}</h2>
+                    <div class="stars">
+                        ${getStarRating(restaurant.rating)}
+                    </div>
+                    <p style="color: var(--text-light); margin-top: 0.5rem;">${restaurant.rating} (400+ ratings)</p>
+                </div>
+                
+                <p style="margin-bottom: 1rem;">${restaurant.description}</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div>
+                        <p><i class="fas fa-map-marker-alt" style="margin-right: 0.5rem; color: var(--primary);"></i> ${restaurant.address}</p>
+                        <p><i class="fas fa-clock" style="margin-right: 0.5rem; color: var(--primary);"></i> ${restaurant.openHours}</p>
+                    </div>
+                    <div>
+                        <p><i class="fas fa-shopping-basket" style="margin-right: 0.5rem; color: var(--primary);"></i> $${restaurant.minimumOrder} minimum</p>
+                        <p><i class="fas fa-truck" style="margin-right: 0.5rem; color: var(--primary);"></i> $${restaurant.deliveryFee} delivery</p>
+                    </div>
+                </div>
+                
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+                    ${restaurant.categories.map(cat => `<span class="badge badge-info">${cat}</span>`).join('')}
+                </div>
+                
+                <button class="btn btn-icon" onclick="closeModal('restaurant-modal'); document.getElementById('menu-container').scrollIntoView({ behavior: 'smooth' });">
+                    <i class="fas fa-utensils"></i> View Full Menu
+                </button>
+            `;
+            
+            openModal('restaurant-modal');
+        }
+
+        let isOrderHistoryVisible = false; // Track if orders are visible
+
+function viewOrders() {
+    const orderHistoryDiv = document.getElementById("order-history");
+
+    // ✅ If already visible, hide the order history
+    if (isOrderHistoryVisible) {
+        orderHistoryDiv.innerHTML = "";
+        isOrderHistoryVisible = false;
+        return;
+    }
+
+    const userEmail = localStorage.getItem("userEmail");
+    if (!userEmail) {
+        alert("You must log in to view your orders!");
+        window.location.href = "login.html";
+        return;
+    }
+
+    fetch(`http://localhost:8081/orders/history?email=${userEmail}`)
+    .then(response => response.json())
+    .then(data => {
+        if (data.length === 0) {
+            orderHistoryDiv.innerHTML = "<p>No orders found.</p>";
+        } else {
+            let ordersHtml = "<h3>Order History</h3><ul>";
+            data.forEach(order => {
+                ordersHtml += `
+                    <li>
+                        <strong>Order ID:</strong> ${order.id} <br>
+                        <strong>Total Amount:</strong> ₹${order.totalAmount} <br>
+                        <strong>Date:</strong> ${new Date(order.createdAt).toLocaleString()} <br>
+                        <strong>Items:</strong> 
+                        <ul>
+                            ${order.items.map(item => `<li>${item.name} - ₹${item.price} x ${item.quantity}</li>`).join("")}
+                        </ul>
+                    </li><hr>
+                `;
+            });
+            ordersHtml += "</ul>";
+            orderHistoryDiv.innerHTML = ordersHtml;
+        }
+
+        isOrderHistoryVisible = true; // Set visibility flag to true
+    })
+    .catch(error => console.error("Error fetching order history:", error));
+}
+
+
+
+        // Helper function to generate star rating HTML
+        function getStarRating(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= rating) {
+                    stars += '<i class="fas fa-star star filled"></i>';
+                } else if (i - 0.5 <= rating) {
+                    stars += '<i class="fas fa-star-half-alt star filled"></i>';
+                } else {
+                    stars += '<i class="far fa-star star"></i>';
+                }
+            }
+            return stars;
+        }
+
+        // Switch menu tab
+        function switchTab(category) {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.textContent === category) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            showMenuCategory(category);
+        }
+
+        // Show menu items for a category
+        function showMenuCategory(category) {
+            const menuContainer = document.getElementById('menu-container');
+            menuContainer.innerHTML = '';
+            
+            const items = menuItems[currentRestaurant][category];
+            const grid = document.createElement('div');
+            grid.className = 'grid';
+            
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="card-img">
+                    <div class="card-content">
+                        <h3 class="card-title">${item.name}</h3>
+                        <p style="color: var(--text-light); margin-bottom: 1rem; font-size: 0.9rem;">${item.description}</p>
+                        <div class="menu-price">
+                            <span>$${item.price.toFixed(2)}</span>
+                            <button class="btn btn-sm btn-icon" onclick="addToCart('${item.id}', '${item.name}', ${item.price})">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            
+            menuContainer.appendChild(grid);
+        }
+
+        // Add item to cart
+        function addToCart(id, name, price) {
+            const existingItem = cart.find(item => item.id === id);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id,
+                    name,
+                    price,
+                    quantity: 1
+                });
+            }
+            
+            updateCartDisplay();
+            showNotification('Item Added', `${name} has been added to your cart.`);
+        }
+
+        // Update cart quantity
+        function updateCartQuantity(id, change) {
+            const index = cart.findIndex(item => item.id === id);
+            if (index === -1) return;
+            
+            cart[index].quantity += change;
+            
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+            
+            updateCartDisplay();
+        }
+
+        // Update cart display
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-shopping-cart empty-icon"></i>
+                        <p>Your cart is empty</p>
+                    </div>
+                `;
+                cartTotal.textContent = '$0.00';
+                return;
+            }
+            
+            cartItems.innerHTML = '';
+            let total = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                const li = document.createElement('li');
+                li.className = 'cart-item';
+                li.innerHTML = `
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+                    </div>
+                    <div class="cart-item-actions">
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="updateCartQuantity('${item.id}', -1)">-</button>
+                            <span class="quantity-input">${item.quantity}</span>
+                            <button class="quantity-btn" onclick="updateCartQuantity('${item.id}', 1)">+</button>
+                        </div>
+                    </div>
+                `;
+                cartItems.appendChild(li);
+            });
+            
+            cartTotal.textContent = `$${total.toFixed(2)}`;
+        }
+
+        // Show suggestions for search
+        function showSuggestions(query) {
+            const suggestionsContainer = document.getElementById('search-suggestions');
+            suggestionsContainer.innerHTML = '';
+            
+            query = query.toLowerCase();
+            
+            // Search for restaurants
+            const restaurantMatches = restaurants.filter(restaurant => 
+                restaurant.name.toLowerCase().includes(query) || 
+                restaurant.categories.some(cat => cat.toLowerCase().includes(query))
+            );
+            
+            // Search for menu items
+            let menuMatches = [];
+            for (const [restaurantId, categories] of Object.entries(menuItems)) {
+                for (const [category, items] of Object.entries(categories)) {
+                    const matches = items.filter(item => 
+                        item.name.toLowerCase().includes(query) || 
+                        item.description.toLowerCase().includes(query)
+                    );
+                    
+                    if (matches.length) {
+                        const restaurant = restaurants.find(r => r.id === restaurantId);
+                        matches.forEach(item => {
+                            menuMatches.push({
+                                ...item,
+                                restaurant: restaurant.name,
+                                restaurantId
+                            });
+                        });
+                    }
+                }
+            }
+            
+            // Show restaurant matches
+            if (restaurantMatches.length) {
+                const heading = document.createElement('div');
+                heading.className = 'suggestion-item';
+                heading.style.fontWeight = 'bold';
+                heading.textContent = 'Restaurants';
+                suggestionsContainer.appendChild(heading);
+                
+                restaurantMatches.slice(0, 3).forEach(restaurant => {
+                    const item = document.createElement('div');
+                    item.className = 'suggestion-item';
+                    item.innerHTML = `<i class="fas fa-store"></i> ${restaurant.name}`;
+                    item.addEventListener('click', () => {
+                        viewRestaurant(restaurant.id);
+                    });
+                    suggestionsContainer.appendChild(item);
+                });
+            }
+            
+            // Show menu item matches
+            if (menuMatches.length) {
+                const heading = document.createElement('div');
+                heading.className = 'suggestion-item';
+                heading.style.fontWeight = 'bold';
+                heading.textContent = 'Menu Items';
+                suggestionsContainer.appendChild(heading);
+                
+                menuMatches.slice(0, 5).forEach(item => {
+                    const element = document.createElement('div');
+                    element.className = 'suggestion-item';
+                    element.innerHTML = `<i class="fas fa-utensils"></i> ${item.name} <span style="color: var(--text-light); font-size: 0.8rem;">(${item.restaurant})</span>`;
+                    element.addEventListener('click', () => {
+                        viewRestaurant(item.restaurantId);
+                        // Find the category that contains this item
+                        const categories = Object.keys(menuItems[item.restaurantId]);
+                        for (const category of categories) {
+                            if (menuItems[item.restaurantId][category].some(menuItem => menuItem.id === item.id)) {
+                                switchTab(category);
+                                break;
+                            }
+                        }
+                    });
+                    suggestionsContainer.appendChild(element);
+                });
+            }
+            
+            // No results
+            if (!restaurantMatches.length && !menuMatches.length) {
+                const noResults = document.createElement('div');
+                noResults.className = 'suggestion-item';
+                noResults.innerHTML = 'No results found';
+                suggestionsContainer.appendChild(noResults);
+            }
+        }
+
+        // Search function
+        function searchItems() {
+            const query = document.getElementById('search-input').value.trim();
+            if (!query) return;
+            
+            document.getElementById('search-suggestions').classList.remove('active');
+            
+            // First try to find exact restaurant matches
+            const restaurantMatches = restaurants.filter(restaurant => 
+                restaurant.name.toLowerCase().includes(query.toLowerCase()) || 
+                restaurant.categories.some(cat => cat.toLowerCase().includes(query.toLowerCase()))
+            );
+            
+            if (restaurantMatches.length === 1) {
+                // If exactly one restaurant matches, go directly to it
+                viewRestaurant(restaurantMatches[0].id);
+                return;
+            }
+            
+            // Otherwise filter the grid
+            const grid = document.getElementById('restaurant-grid');
+            grid.innerHTML = '';
+            
+            if (restaurantMatches.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <i class="fas fa-search empty-icon"></i>
+                        <p>No results found for "${query}"</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Update the section title
+            document.querySelector('.section-title').textContent = `Search Results for "${query}"`;
+            
+            // Display matches
+            restaurantMatches.forEach(restaurant => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <img src="${restaurant.image}" alt="${restaurant.name}" class="card-img">
+                    <div class="card-content">
+                        <h3 class="card-title">${restaurant.name}</h3>
+                        <div class="restaurant-info">
+                            <span><i class="fas fa-star"></i> ${restaurant.rating}</span>
+                            <span><i class="fas fa-clock"></i> ${restaurant.deliveryTime} min</span>
+                        </div>
+                        <div class="restaurant-info">
+                            ${restaurant.categories.map(cat => `<span class="badge badge-info">${cat}</span>`).join('')}
+                        </div>
+                        <div class="menu-price">
+                            <span>$${restaurant.minimumOrder} min</span>
+                            <button class="btn btn-sm" onclick="viewRestaurant('${restaurant.id}')">View Menu</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Toggle theme
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeToggle = document.getElementById('theme-toggle');
+            
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.setAttribute('data-theme', 'light');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+        }
+
+        // Open modal
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Open checkout modal
+        function openCheckoutModal() {
+            const orderStatus = document.getElementById("order-status");
+        if (orderStatus) {
+        orderStatus.innerHTML = "";
+        }
+            if (cart.length === 0) {
+                showNotification('Empty Cart', 'Please add items to your cart before checkout.');
+                return;
+            }
+            
+            openModal('checkout-modal');
+        }
+
+        function checkServerLoad() {
+    fetch("http://localhost:8081/orders/server-load")
+    .then(response => response.json())
+    .then(data => {
+        let loadHtml = "<h3>Server Load</h3><ul>";
+        data.forEach(server => {
+            loadHtml += `<li>Server ${server.server_id}: ${server.order_count} Orders</li>`;
+        });
+        loadHtml += "</ul>";
+        document.getElementById("server-load").innerHTML = loadHtml;
+    })
+    .catch(error => console.error("Error fetching server load:", error));
+}
+
+
+        function placeOrder() {
+    if (window.isPlacingOrder) return; // ✅ Prevents multiple requests
+    window.isPlacingOrder = true;
+
+    const userEmail = localStorage.getItem("userEmail");
+    if (!userEmail) {
+        alert("You must log in to place an order!");
+        window.location.href = "login.html";
+        return;
+    }
+
+    if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+
+    const fullName = document.getElementById("name").value.trim();
+    const address = document.getElementById("address").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+
+    if (!fullName || !address || !phone) {
+        alert("Please fill in all checkout details before placing the order.");
+        return;
+    }
+
+    const orderData = {
+        email: userEmail,
+        items: cart,
+        totalAmount: cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
+    };
+
+    const orderButton = document.querySelector("button[onclick='placeOrder()']");
+    if (orderButton) {
+        orderButton.disabled = true; // ✅ Disable button while processing
+    }
+
+    fetch("http://localhost:8081/orders/place", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Order placement failed!");
+        }
+        return response.text();
+    })
+    .then(data => {
+        document.getElementById("order-status").innerHTML = `
+            <p style="color: green;">${data}</p>
+        `;
+        cart = [];
+        updateCartUI();
+    })
+    .catch(error => {
+        document.getElementById("order-status").innerHTML = `
+            <p style="color: red;">Failed to place order. Try again.</p>
+        `;
+        console.error("Error:", error);
+    })
+    .finally(() => {
+        window.isPlacingOrder = false; // ✅ Allow next order after response
+        if (orderButton) {
+            orderButton.disabled = false; // ✅ Re-enable button after request
+        }
+    });
+}
+
+
+
+
+
+
+        // Show notification
+        function showNotification(title, message) {
+            const notification = document.getElementById('notification');
+            const notificationTitle = document.getElementById('notification-title');
+            const notificationMessage = document.getElementById('notification-message');
+            
+            notificationTitle.textContent = title;
+            notificationMessage.textContent = message;
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
